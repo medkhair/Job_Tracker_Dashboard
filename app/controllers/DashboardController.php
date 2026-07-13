@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/../models/Company.php';
+require_once __DIR__ . '/../Controller.php';
 
-class DashboardController
+class DashboardController extends Controller
 {
     protected $companyModel;
 
@@ -16,9 +17,6 @@ class DashboardController
         $counts = $this->companyModel->getCountsByStatus();
         $totalCompanies = $this->companyModel->totalCompanies();
         $totalApplications = $this->companyModel->totalApplications();
-
-        include __DIR__ . '/../views/header.php';
-        include __DIR__ . '/../views/dashboard.php';
-        include __DIR__ . '/../views/footer.php';
+        $this->render('dashboard', ['companies'=>$companies,'counts'=>$counts,'totalCompanies'=>$totalCompanies,'totalApplications'=>$totalApplications]);
     }
 }
