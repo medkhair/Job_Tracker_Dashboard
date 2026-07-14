@@ -41,7 +41,7 @@ class Company extends Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function filter($statusFilter = 'all', $cityId = null)
+    public function filter($statusFilter = 'all', $cityId = null, $searchTerm = null)
     {
         $sql = 'SELECT * FROM companies WHERE 1=1';
         $params = [];
@@ -49,6 +49,11 @@ class Company extends Model
         if ($cityId) {
             $sql .= ' AND city_id = :city_id';
             $params[':city_id'] = $cityId;
+        }
+
+        if (!empty($searchTerm)) {
+            $sql .= ' AND name LIKE :search_term';
+            $params[':search_term'] = '%' . $searchTerm . '%';
         }
 
         if ($statusFilter === 'applied') {

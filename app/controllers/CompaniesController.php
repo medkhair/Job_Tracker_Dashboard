@@ -17,7 +17,8 @@ class CompaniesController extends Controller
     {
         $statusFilter = $_GET['status_filter'] ?? 'all';
         $cityId = isset($_GET['city_id']) && $_GET['city_id'] !== '' ? (int)$_GET['city_id'] : null;
-        $companies = $this->model->filter($statusFilter, $cityId);
+        $searchTerm = trim($_GET['search'] ?? '');
+        $companies = $this->model->filter($statusFilter, $cityId, $searchTerm);
         $cities = $this->cityModel->all();
 
         $this->render('companies/index', [
@@ -25,6 +26,7 @@ class CompaniesController extends Controller
             'cities' => $cities,
             'statusFilter' => $statusFilter,
             'selectedCityId' => $cityId,
+            'searchTerm' => $searchTerm,
         ], ['getCompanieCityName'=>[$this, 'getCompanieCityName']]);
     }
 

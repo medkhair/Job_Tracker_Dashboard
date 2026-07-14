@@ -25,6 +25,10 @@
         </select>
     </div>
     <div class="col-auto">
+        <label class="form-label">Search</label>
+        <input class="form-control form-control-sm" type="text" name="search" value="<?php echo htmlspecialchars($searchTerm ?? ''); ?>" placeholder="Company name">
+    </div>
+    <div class="col-auto">
         <button class="btn btn-outline-secondary btn-sm">Filter</button>
         <a class="btn btn-outline-light btn-sm" href="?c=companies">Reset</a>
     </div>
