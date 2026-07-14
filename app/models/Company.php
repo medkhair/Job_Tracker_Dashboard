@@ -83,4 +83,12 @@ class Company extends Model
         $stmt = $this->pdo()->prepare('DELETE FROM companies WHERE id = :id');
         return $stmt->execute([':id'=>$id]);
     }
+
+    public function getCompanieCityName($cityId)
+    {
+        $sql = 'SELECT name FROM cities WHERE id = :cityId';
+        $stmt = $this->pdo()->prepare($sql);
+        $stmt->execute([':cityId'=>$cityId]);
+        return $stmt->fetchColumn();
+    }
 }

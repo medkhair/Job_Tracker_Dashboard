@@ -16,7 +16,7 @@ class CompaniesController extends Controller
     public function index()
     {
         $companies = $this->model->all();
-        $this->render('companies/index', ['companies'=>$companies]);
+        $this->render('companies/index', ['companies'=>$companies], ['getCompanieCityName'=>[$this, 'getCompanieCityName']]);
     }
 
     public function create()
@@ -48,5 +48,10 @@ class CompaniesController extends Controller
             $this->model->delete($id);
         }
         header('Location: ?c=companies');
+    }
+
+    public function getCompanieCityName($cityId)
+    {
+        return $this->model->getCompanieCityName($cityId);
     }
 }
