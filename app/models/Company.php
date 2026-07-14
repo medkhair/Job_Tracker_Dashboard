@@ -41,6 +41,22 @@ class Company extends Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getAvailableForApplication($excludeCompanyId = null)
+    {
+        $sql = 'SELECT * FROM companies WHERE NOT EXISTS (SELECT 1 FROM applications WHERE company_id = companies.id)';
+        $params = [];
+
+        if ($excludeCompanyId) {
+            $sql .= ' OR id = :excludeCompanyId';
+            $params[':excludeCompanyId'] = $excludeCompanyId;
+        }
+
+        $sql .= ' ORDER BY name';
+        $stmt = $this->pdo()->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function find($id)
     {
         $stmt = $this->pdo()->prepare('SELECT * FROM companies WHERE id = :id');

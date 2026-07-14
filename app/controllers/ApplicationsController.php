@@ -24,7 +24,7 @@ class ApplicationsController extends Controller
 
     public function create()
     {
-        $companies = $this->companyModel->all();
+        $companies = $this->companyModel->getAvailableForApplication();
         $statuses = $this->statusModel->all();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->model->create($_POST);
@@ -37,7 +37,7 @@ class ApplicationsController extends Controller
     public function edit($id)
     {
         $app = $this->model->find($id);
-        $companies = $this->companyModel->all();
+        $companies = $this->companyModel->getAvailableForApplication($app['company_id'] ?? null);
         $statuses = $this->statusModel->all();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->model->update($id,$_POST);
