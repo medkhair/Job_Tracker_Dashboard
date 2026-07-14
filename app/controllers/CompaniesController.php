@@ -50,6 +50,24 @@ class CompaniesController extends Controller
         header('Location: ?c=companies');
     }
 
+    public function show($id)
+    {
+        if (!$id) {
+            header('Location: ?c=companies');
+            return;
+        }
+
+        $company = $this->model->find($id);
+        if (!$company) {
+            http_response_code(404);
+            echo 'Company not found';
+            return;
+        }
+
+        $cityName = $this->model->getCompanieCityName($company['city_id']);
+        $this->render('companies/companyPage', ['company' => $company, 'cityName' => $cityName]);
+    }
+
     public function getCompanieCityName($cityId)
     {
         return $this->model->getCompanieCityName($cityId);

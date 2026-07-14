@@ -17,6 +17,7 @@
             <td>
                 <a class="btn btn-sm btn-primary" href="?c=companies&a=edit&id=<?php echo $c['id']; ?>">Edit</a>
                 <a class="btn btn-sm btn-danger" href="?c=companies&a=delete&id=<?php echo $c['id']; ?>" onclick="return confirm('Delete?')">Delete</a>
+                <a class="btn btn-sm btn-info" href="?c=companies&a=show&id=<?php echo $c['id']; ?>"><i class="bi bi-eye"></i></a>
             </td>
         </tr>
     <?php endforeach; ?>
