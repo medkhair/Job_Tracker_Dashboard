@@ -15,8 +15,17 @@ class CompaniesController extends Controller
 
     public function index()
     {
-        $companies = $this->model->all();
-        $this->render('companies/index', ['companies'=>$companies], ['getCompanieCityName'=>[$this, 'getCompanieCityName']]);
+        $statusFilter = $_GET['status_filter'] ?? 'all';
+        $cityId = isset($_GET['city_id']) && $_GET['city_id'] !== '' ? (int)$_GET['city_id'] : null;
+        $companies = $this->model->filter($statusFilter, $cityId);
+        $cities = $this->cityModel->all();
+
+        $this->render('companies/index', [
+            'companies' => $companies,
+            'cities' => $cities,
+            'statusFilter' => $statusFilter,
+            'selectedCityId' => $cityId,
+        ], ['getCompanieCityName'=>[$this, 'getCompanieCityName']]);
     }
 
     public function create()

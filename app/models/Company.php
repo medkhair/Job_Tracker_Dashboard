@@ -41,6 +41,28 @@ class Company extends Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function filter($statusFilter = 'all', $cityId = null)
+    {
+        $sql = 'SELECT * FROM companies WHERE 1=1';
+        $params = [];
+
+        if ($cityId) {
+            $sql .= ' AND city_id = :city_id';
+            $params[':city_id'] = $cityId;
+        }
+
+        if ($statusFilter === 'applied') {
+            $sql .= ' AND EXISTS (SELECT 1 FROM applications WHERE company_id = companies.id)';
+        } elseif ($statusFilter === 'non_applied') {
+            $sql .= ' AND NOT EXISTS (SELECT 1 FROM applications WHERE company_id = companies.id)';
+        }
+
+        $sql .= ' ORDER BY name';
+        $stmt = $this->pdo()->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getAvailableForApplication($excludeCompanyId = null)
     {
         $sql = 'SELECT * FROM companies WHERE NOT EXISTS (SELECT 1 FROM applications WHERE company_id = companies.id)';
